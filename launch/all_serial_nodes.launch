@@ -1,0 +1,42 @@
+<launch>
+  <!-- ===== Args (可按需在命令行覆盖) ===== -->
+  <arg name="gripper_port"           default="/dev/ttyACM0"/>
+  <arg name="gripper_baud"           default="115200"/>
+
+  <arg name="ph_port"                default="/dev/ttyACM2"/>
+  <arg name="ph_baud"                default="9600"/>
+  <arg name="ph_publish_voltage"     default="false"/>
+
+  <arg name="pipette_motor_port"     default="/dev/ttyACM1"/>
+  <arg name="pipette_motor_baud"     default="9600"/>
+
+  <arg name="pipetty_port"           default="/dev/ttyUSB1"/>
+  <arg name="pipetty_baud"           default="31520"/>
+
+  <group ns="robot_control">
+    <!-- gripper_serial_node -->
+    <node pkg="robot_control" type="gripper_serial.py" name="gripper_serial_node" output="screen" respawn="true">
+      <param name="port" value="$(arg gripper_port)"/>
+      <param name="baud" value="$(arg gripper_baud)"/>
+    </node>
+
+    <!-- ph_sensor_node -->
+    <node pkg="robot_control" type="pH_serial.py" name="ph_sensor_node" output="screen" respawn="true">
+      <param name="port" value="$(arg ph_port)"/>
+      <param name="baud" value="$(arg ph_baud)"/>
+      <param name="publish_voltage" value="$(arg ph_publish_voltage)"/>
+    </node>
+
+    <!-- pipette_motor_node -->
+    <node pkg="robot_control" type="pipette_motor_serial.py" name="pipette_motor_node" output="screen" respawn="true">
+      <param name="port" value="$(arg pipette_motor_port)"/>
+      <param name="baud" value="$(arg pipette_motor_baud)"/>
+    </node>
+
+    <!-- pipetty_node -->
+    <node pkg="robot_control" type="pipetty_serial.py" name="pipetty_node" output="screen" respawn="true">
+      <param name="port" value="$(arg pipetty_port)"/>
+      <param name="baud" value="$(arg pipetty_baud)"/>
+    </node>
+  </group>
+</launch>
